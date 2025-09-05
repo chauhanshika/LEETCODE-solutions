@@ -1,0 +1,59 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'pylons' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER k
+#  2. INTEGER_ARRAY arr
+#
+
+def pylons(k, arr):
+    n = len(arr)
+    i = 0
+    plants = 0
+    
+    while i < n:
+        # find the farthest city where we can place a plant within [i+k-1, i-(k-1)]
+        pos = -1
+        start = min(n - 1, i + k - 1)   # farthest right we can check
+        end = max(0, i - (k - 1))       # farthest left allowed
+        
+        # search backward (rightmost suitable position first)
+        for j in range(start, end - 1, -1):
+            if arr[j] == 1:
+                pos = j
+                break
+        
+        # if no plant can be placed
+        if pos == -1:
+            return -1
+        
+        # place the plant and jump ahead
+        plants += 1
+        i = pos + k   # next uncovered city
+    
+    return plants
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    n = int(first_multiple_input[0])
+    k = int(first_multiple_input[1])
+    arr = list(map(int, input().rstrip().split()))
+
+    result = pylons(k, arr)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
