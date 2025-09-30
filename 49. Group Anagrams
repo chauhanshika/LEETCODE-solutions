@@ -1,0 +1,23 @@
+from collections import defaultdict
+
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        # Initialize a dictionary where values default to an empty list.
+        # The key will be the sorted string (the canonical form).
+        anagram_groups = defaultdict(list)
+        
+        for s in strs:
+            # 1. Create the canonical key: Sort the characters and join them back into a string.
+            # Example: "eat" -> ['e', 'a', 't'] -> ['a', 'e', 't'] -> "aet"
+            key = "".join(sorted(s))
+            
+            # 2. Append the original string to the list associated with the key.
+            # If the key is new, defaultdict creates a new list for it automatically.
+            anagram_groups[key].append(s)
+            
+        # 3. The result is the collection of all lists (values) in the dictionary.
+        return list(anagram_groups.values())
